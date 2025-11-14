@@ -10,16 +10,15 @@ import (
 	"git.kundeng.us/phoenix/textsender-models/pkg/message"
 	"github.com/twilio/twilio-go"
 	twilioApi "github.com/twilio/twilio-go/rest/api/v2010"
+
+	"git.kundeng.us/phoenix/swoosh/swoop/types"
 )
 
-type TwilioResult = twilioApi.ApiV2010Message
-
 type MessageSender struct {
-	Numbers []contact.Contact
-	Config  config.TwiloConfig
+	Config config.TwiloConfig
 }
 
-func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*TwilioResult, error) {
+func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: m.Config.AccountSID,
@@ -36,8 +35,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 		}
 	}
 
-	resp, err := client.Api.CreateMessage(params)
-	if err != nil {
+	if resp, err := client.Api.CreateMessage(params); err != nil {
 		return nil, fmt.Errorf("Error sending message: %v", err)
 	} else {
 		if _, err := json.Marshal(*resp); err != nil {
