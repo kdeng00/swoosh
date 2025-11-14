@@ -21,6 +21,15 @@ jobs:
 
       - name: Download dependencies
         run: |
+          echo "Initializing config"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/swoosh_deploy_key
+          chmod 600 ~/.ssh/swoosh_deploy_key
+          ssh-keyscan ${{ vars.MY_HOST }} >> ~/.ssh/known_hosts
+
+          eval $(ssh-agent -s)
+          ssh-add -v ~/.ssh/swoosh_deploy_key
+
           go mod download
 
       - name: Run tests
