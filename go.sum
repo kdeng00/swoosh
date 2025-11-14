@@ -1,0 +1,4 @@
+git.kundeng.us/phoenix/textsender-models v0.0.6-main-28b29802b9-556 h1:2NI8cXaxt2rsXrhy/rDhgoOzvjLQwbhwr4nv2g35Ah8=
+git.kundeng.us/phoenix/textsender-models v0.0.6-main-28b29802b9-556/go.mod h1:lx5MCnOgGgsdpwzrfi9uph5xmkeb6H8AuexUNGss2no=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
