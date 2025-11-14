@@ -19,20 +19,20 @@ type MessageSender struct {
 	Config  config.TwiloConfig
 }
 
-func (m *MessageSender) Send(msg message.Message, number contact.Contact, time *time.Time) (*TwilioResult, error) {
+func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*TwilioResult, error) {
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
-		Username: Config.AccountSID,
-		Password: Config.AuthToken,
+		Username: m.Config.AccountSID,
+		Password: m.Config.AuthToken,
 	})
 
 	params := &twilioApi.CreateMessageParams{}
 	params.SetTo(number.PhoneNumber)
-	params.SetFrom(Config.Number)
-	params.SetBody(message.Content)
-	if time != nil {
-		if time > now {
-			params.SetSendAt(*time)
+	params.SetFrom(m.Config.Number)
+	params.SetBody(msg.Content)
+	if sendTime != nil {
+		if sendTime.After(now) {
+			params.SetSendAt(*sendTime)
 		}
 	}
 
