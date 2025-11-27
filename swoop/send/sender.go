@@ -15,10 +15,13 @@ import (
 )
 
 type MessageSender struct {
-	Config config.TwiloConfig
+	Config *config.TwiloConfig
 }
 
 func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
+	if m.Config == nil {
+		return fmt.Errorf("Config has not been initialized")
+	}
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: m.Config.AccountSID,
