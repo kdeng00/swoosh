@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"git.kundeng.us/phoenix/textsender-models/pkg/config"
-	"git.kundeng.us/phoenix/textsender-models/pkg/contact"
-	"git.kundeng.us/phoenix/textsender-models/pkg/message"
+	"git.kundeng.us/phoenix/textsender-models/tx0/config"
+	"git.kundeng.us/phoenix/textsender-models/tx0/contact"
+	"git.kundeng.us/phoenix/textsender-models/tx0/message"
 	"github.com/twilio/twilio-go"
 	twilioApi "github.com/twilio/twilio-go/rest/api/v2010"
 
@@ -15,10 +15,13 @@ import (
 )
 
 type MessageSender struct {
-	Config config.TwiloConfig
+	Config *config.TwiloConfig
 }
 
 func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
+	if m.Config == nil {
+		return nil, fmt.Errorf("Config has not been initialized")
+	}
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: m.Config.AccountSID,
