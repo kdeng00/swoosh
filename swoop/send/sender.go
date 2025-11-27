@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"git.kundeng.us/phoenix/textsender-models/pkg/config"
-	"git.kundeng.us/phoenix/textsender-models/pkg/contact"
-	"git.kundeng.us/phoenix/textsender-models/pkg/message"
+	"git.kundeng.us/phoenix/textsender-models/tx0/config"
+	"git.kundeng.us/phoenix/textsender-models/tx0/contact"
+	"git.kundeng.us/phoenix/textsender-models/tx0/message"
 	"github.com/twilio/twilio-go"
 	twilioApi "github.com/twilio/twilio-go/rest/api/v2010"
 
