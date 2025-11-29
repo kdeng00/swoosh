@@ -14,6 +14,7 @@ import (
 	"git.kundeng.us/phoenix/swoosh/swoop/types"
 )
 
+
 type MessageSender struct {
 	Config *config.TwiloConfig
 }
@@ -33,10 +34,8 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	params.SetFrom(m.Config.Number)
 	params.SetMessagingServiceSid(m.Config.ServiceSID)
 	params.SetBody(msg.Content)
-	if sendTime != nil {
-		if sendTime.After(now) {
-			params.SetSendAt(*sendTime)
-		}
+	if sendTime != nil && isSchedulable(now, sendTime) {
+		params.SetSendAt(*sendTime)
 	}
 
 	if resp, err := client.Api.CreateMessage(params); err != nil {
@@ -47,5 +46,15 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 		} else {
 			return resp, nil
 		}
+	}
+}
+
+func isSchedulable(now *time.Time, scheduled *time.Time) (bool) {
+	early := now.Add(300 * time.Second)
+
+	if scheduled.Before(early) && scheduled.After(now) {
+		return true
+	} else {
+		return false
 	}
 }
