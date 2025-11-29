@@ -31,6 +31,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	params := &twilioApi.CreateMessageParams{}
 	params.SetTo(number.PhoneNumber)
 	params.SetFrom(m.Config.Number)
+	params.SetMessagingServiceSid(m.Config.ServiceSID)
 	params.SetBody(msg.Content)
 	if sendTime != nil {
 		if sendTime.After(now) {
