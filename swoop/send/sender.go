@@ -36,7 +36,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	params.SetFrom(m.Config.Number)
 	params.SetMessagingServiceSid(m.Config.ServiceSID)
 	params.SetBody(msg.Content)
-	if sendTime != nil && isSchedulable(now, sendTime) {
+	if sendTime != nil && isSchedulable(&now, sendTime) {
 		params.SetSendAt(*sendTime)
 		params.SetScheduleType(Schedule_Type)
 	}
