@@ -14,7 +14,6 @@ import (
 	"git.kundeng.us/phoenix/swoosh/swoop/types"
 )
 
-
 const Schedule_Type = "fixed"
 
 type MessageSender struct {
@@ -52,7 +51,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	}
 }
 
-func isSchedulable(now *time.Time, scheduled *time.Time) (bool) {
+func isSchedulable(now *time.Time, scheduled *time.Time) bool {
 	early := now.Add(300 * time.Second)
 
 	if scheduled.After(early) {
