@@ -55,7 +55,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 func isSchedulable(now *time.Time, scheduled *time.Time) (bool) {
 	early := now.Add(300 * time.Second)
 
-	if scheduled.Before(early) && scheduled.After(now) {
+	if scheduled.After(early) {
 		return true
 	} else {
 		return false
