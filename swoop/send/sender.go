@@ -15,6 +15,8 @@ import (
 )
 
 
+const Schedule_Type = "fixed"
+
 type MessageSender struct {
 	Config *config.TwiloConfig
 }
@@ -36,6 +38,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	params.SetBody(msg.Content)
 	if sendTime != nil && isSchedulable(now, sendTime) {
 		params.SetSendAt(*sendTime)
+		params.SetScheduleType(Schedule_Type)
 	}
 
 	if resp, err := client.Api.CreateMessage(params); err != nil {
