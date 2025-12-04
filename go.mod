@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	git.kundeng.us/phoenix/textsender-models v0.0.11
-	github.com/twilio/twilio-go v1.28.7
+	github.com/twilio/twilio-go v1.28.8
 )
 
 require (
