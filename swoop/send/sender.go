@@ -17,7 +17,7 @@ import (
 const Schedule_Type = "fixed"
 
 type MessageSender struct {
-	Config *config.TwiloConfig
+	Config *config.TwilioConfig
 }
 
 func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
