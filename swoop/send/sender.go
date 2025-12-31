@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.kundeng.us/phoenix/textsender-models/tx0/config"
+	auxcfg "git.kundeng.us/phoenix/textsender-models/tx0/config/auxiliary"
 	"git.kundeng.us/phoenix/textsender-models/tx0/contact"
 	"git.kundeng.us/phoenix/textsender-models/tx0/message"
 	"github.com/twilio/twilio-go"
@@ -15,14 +15,17 @@ import (
 )
 
 const Schedule_Type = "fixed"
+const Schedulable_Limit_In_Seconds = 300
 
 type MessageSender struct {
-	Config *config.TwilioConfig
+	Config *auxcfg.TwilioConfig
 }
 
-func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
+// Sends a message to a contact via Twilio
+// Has support for scheduling a time based on if it is in the future
+func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, map[string]any, error) {
 	if m.Config == nil {
-		return nil, fmt.Errorf("Config has not been initialized")
+		return nil, nil, fmt.Errorf("Config has not been initialized")
 	}
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
@@ -41,18 +44,23 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	}
 
 	if resp, err := client.Api.CreateMessage(params); err != nil {
-		return nil, fmt.Errorf("Error sending message: %v", err)
+		return nil, nil, fmt.Errorf("Error sending message: %v", err)
 	} else {
-		if _, err := json.Marshal(*resp); err != nil {
-			return nil, fmt.Errorf("Error parsing result: %v", err)
+		if twilioRespMarshaled, err := json.Marshal(*resp); err != nil {
+			return nil, nil, fmt.Errorf("Error parsing result: %v", err)
 		} else {
-			return resp, nil
+			var rawObject map[string]any
+			if err := json.Unmarshal(twilioRespMarshaled, &rawObject); err != nil {
+				return resp, nil, err
+			} else {
+				return resp, rawObject, nil
+			}
 		}
 	}
 }
 
 func isSchedulable(now *time.Time, scheduled *time.Time) bool {
-	early := now.Add(300 * time.Second)
+	early := now.Add(Schedulable_Limit_In_Seconds * time.Second)
 
 	if scheduled.After(early) {
 		return true
