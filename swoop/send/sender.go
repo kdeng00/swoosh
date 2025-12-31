@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.kundeng.us/phoenix/textsender-models/tx0/config"
+	auxcfg "git.kundeng.us/phoenix/textsender-models/tx0/config/auxiliary"
 	"git.kundeng.us/phoenix/textsender-models/tx0/contact"
 	"git.kundeng.us/phoenix/textsender-models/tx0/message"
 	"github.com/twilio/twilio-go"
@@ -17,7 +17,7 @@ import (
 const Schedule_Type = "fixed"
 
 type MessageSender struct {
-	Config *config.TwilioConfig
+	Config *auxcfg.TwilioConfig
 }
 
 func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
