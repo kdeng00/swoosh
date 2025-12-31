@@ -15,11 +15,14 @@ import (
 )
 
 const Schedule_Type = "fixed"
+const Schedulable_Limit_In_Seconds = 300
 
 type MessageSender struct {
 	Config *auxcfg.TwilioConfig
 }
 
+// Sends a message to a contact via Twilio
+// Has support for scheduling a time based on if it is in the future
 func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, map[string]any, error) {
 	if m.Config == nil {
 		return nil, nil, fmt.Errorf("Config has not been initialized")
@@ -57,7 +60,7 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 }
 
 func isSchedulable(now *time.Time, scheduled *time.Time) bool {
-	early := now.Add(300 * time.Second)
+	early := now.Add(Schedulable_Limit_In_Seconds * time.Second)
 
 	if scheduled.After(early) {
 		return true
