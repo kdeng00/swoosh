@@ -20,9 +20,9 @@ type MessageSender struct {
 	Config *auxcfg.TwilioConfig
 }
 
-func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, error) {
+func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, map[string]any, error) {
 	if m.Config == nil {
-		return nil, fmt.Errorf("Config has not been initialized")
+		return nil, nil, fmt.Errorf("Config has not been initialized")
 	}
 	now := time.Now()
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
@@ -41,12 +41,17 @@ func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTi
 	}
 
 	if resp, err := client.Api.CreateMessage(params); err != nil {
-		return nil, fmt.Errorf("Error sending message: %v", err)
+		return nil, nil, fmt.Errorf("Error sending message: %v", err)
 	} else {
-		if _, err := json.Marshal(*resp); err != nil {
-			return nil, fmt.Errorf("Error parsing result: %v", err)
+		if twilioRespMarshaled, err := json.Marshal(*resp); err != nil {
+			return nil, nil, fmt.Errorf("Error parsing result: %v", err)
 		} else {
-			return resp, nil
+			var rawObject map[string]any
+			if err := json.Unmarshal(twilioRespMarshaled, &rawObject); err != nil {
+				return resp, nil, err
+			} else {
+				return resp, rawObject, nil
+			}
 		}
 	}
 }
