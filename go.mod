@@ -3,7 +3,7 @@ module git.kundeng.us/phoenix/swoosh
 go 1.25.4
 
 require (
-	git.kundeng.us/phoenix/textsender-models v0.0.12
+	git.kundeng.us/phoenix/textsender-models v0.1.6-30-f4e2336771-556
 	github.com/twilio/twilio-go v1.28.8
 )
 

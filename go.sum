@@ -1,5 +1,7 @@
 git.kundeng.us/phoenix/textsender-models v0.0.12 h1:ps9H3FS5LyCwQhAiIvg4vYyfLZZ64dex1y9ytb0o9C4=
 git.kundeng.us/phoenix/textsender-models v0.0.12/go.mod h1:9iPDQJg1Tc6WMNoW5+f8YKmnosMwlWHJ++hmxNLDEe0=
+git.kundeng.us/phoenix/textsender-models v0.1.6-30-f4e2336771-556 h1:869mq7lyB+XaNqJOMOGWdfHs97sC2OrreIxW4zkIjkQ=
+git.kundeng.us/phoenix/textsender-models v0.1.6-30-f4e2336771-556/go.mod h1:9iPDQJg1Tc6WMNoW5+f8YKmnosMwlWHJ++hmxNLDEe0=
 github.com/beevik/etree v1.1.0/go.mod h1:r8Aw8JqVegEf0w2fDnATrX9VpkMcyFeM0FhwO62wh+A=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
