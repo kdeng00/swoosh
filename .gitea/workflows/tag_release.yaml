@@ -44,13 +44,3 @@ jobs:
         run: |
           echo "Printing version"
           echo "Version: ${{ steps.version.outputs.project_tag_release }}"
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.project_tag_release }}
-          release_name: Release ${{ steps.version.outputs.project_tag_release }}
-          body: |
-           Release of version ${{ steps.version.outputs.project_tag_release }}
