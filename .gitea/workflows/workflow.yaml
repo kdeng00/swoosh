@@ -13,7 +13,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: '1.25.4'
+          go-version: '1.26.1'
       - name: Configure Git for SSH
         run: |
           git config --global url."git@${{ secrets.GIT_HOST_ROOT }}:".insteadOf "https://${{ secrets.GIT_HOST_ROOT }}/"
