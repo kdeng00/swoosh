@@ -1,10 +1,10 @@
 module git.kundeng.us/phoenix/swoosh
 
-go 1.26.1
+go 1.26.2
 
 require (
-	git.kundeng.us/phoenix/textsender-models v0.2.0
-	github.com/twilio/twilio-go v1.30.4
+	git.kundeng.us/phoenix/textsender-models v0.2.1
+	github.com/twilio/twilio-go v1.30.5
 )
 
 require (
