@@ -1,6 +1,6 @@
 
 #[derive(Clone, Debug, Default, serde::Deserialize, serde::Serialize)]
-pub struct APIMessage {
+pub struct TwilioAPIMessage {
     pub account_sid: String,
     pub api_version: String,
     pub body: String,
