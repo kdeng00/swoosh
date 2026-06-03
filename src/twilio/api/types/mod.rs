@@ -6,7 +6,7 @@ pub struct TwilioAPIMessage {
     pub body: String,
     // pub date_created: time::OffsetDateTime,
     pub date_sent: Option<time::OffsetDateTime>,
-    pub date_updated: time::OffsetDateTime,
+    pub date_updated: Option<time::OffsetDateTime>,
     pub direction: String,
     // Not definite of what type this is
     pub error_code: Option<String>,
