@@ -1,4 +1,3 @@
-
 #[derive(Clone, Debug, Default, serde::Deserialize, serde::Serialize)]
 pub struct TwilioAPIMessage {
     pub account_sid: String,
@@ -22,15 +21,13 @@ pub struct TwilioAPIMessage {
     pub status: String,
     pub subresource_uris: SubresourceURI,
     pub to: String,
-    pub uri: String
+    pub uri: String,
 }
 
 #[derive(Clone, Debug, Default, serde::Deserialize, serde::Serialize)]
 pub struct SubresourceURI {
     pub media: String,
 }
-
-
 
 /*
 {
