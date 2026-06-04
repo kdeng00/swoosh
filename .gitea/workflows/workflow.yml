@@ -21,7 +21,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/textsender-models_deploy_key
           chmod 600 ~/.ssh/textsender-models_deploy_key
-          ssh-keyscan ${{ secret.MYHOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secret.MY_HOST }} >> ~/.ssh/known_hosts
 
           eval $(ssh-agent -s)
           ssh-add -v ~/.ssh/textsender-models_deploy_key
@@ -40,7 +40,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/textsender-models_deploy_key
           chmod 600 ~/.ssh/textsender-models_deploy_key
-          ssh-keyscan ${{ secret.MYHOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secret.MY_HOST }} >> ~/.ssh/known_hosts
 
           eval $(ssh-agent -s)
           ssh-add -v ~/.ssh/textsender-models_deploy_key
@@ -60,7 +60,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/textsender-models_deploy_key
           chmod 600 ~/.ssh/textsender-models_deploy_key
-          ssh-keyscan ${{ secret.MYHOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secret.MY_HOST }} >> ~/.ssh/known_hosts
 
           eval $(ssh-agent -s)
           ssh-add -v ~/.ssh/textsender-models_deploy_key
@@ -80,7 +80,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/textsender-models_deploy_key
           chmod 600 ~/.ssh/textsender-models_deploy_key
-          ssh-keyscan ${{ secret.MYHOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secret.MY_HOST }} >> ~/.ssh/known_hosts
 
           eval $(ssh-agent -s)
           ssh-add -v ~/.ssh/textsender-models_deploy_key
@@ -99,7 +99,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MYREPO_TOKEN }}" > ~/.ssh/textsender-models_deploy_key
           chmod 600 ~/.ssh/textsender-models_deploy_key
-          ssh-keyscan ${{ secret.MYHOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secret.MY_HOST }} >> ~/.ssh/known_hosts
 
           eval $(ssh-agent -s)
           ssh-add -v ~/.ssh/textsender-models_deploy_key
