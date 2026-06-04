@@ -2,7 +2,7 @@
 
 pub mod types;
 
-pub fn send_mssage(
+pub async fn send_mssage(
     msg: &textsender_models::message::Message,
     contact: &textsender_models::contact::Contact,
     param: crate::twilio::types::Parameters,
@@ -22,6 +22,7 @@ pub fn send_mssage(
                     "application/x-www-form-urlencoded".parse().unwrap(),
                 );
                 headers.insert("Accept", "application/json".parse().unwrap());
+                let auth = generate_auth(&config);
                 // headers.insert("Authorization", "Basic QUNlZmExZWY1MTYzMTRjOWQxYTY4Y2JkNjU3ZGU0OTI3NzpmNGExZjJiMGI3OWVhMzczNTA3OGMyZDhlZTk2ODRlMQ==".parse()?);
 
                 let mut params = std::collections::HashMap::new();
@@ -38,8 +39,19 @@ pub fn send_mssage(
                 // params.insert("PersistentAction", "string");
                 // params.insert("PersistentAction", "string");
                 params.insert("ShortenUrls", "true");
-                // params.insert("ScheduleType", "fixed");
-                // params.insert("SendAt", "2026-06-03T19:50:00.0Z");
+                let date = match param.schedule_at {
+                    Some(date_value) => {
+                        let converted = date_value.to_string();
+                        converted
+                    }
+                    None => {
+                       String::new()
+                    }
+                };
+                if param.schedule && is_scheduleable(&Some(now), &param.schedule_at) {
+                    params.insert("ScheduleType", "fixed");
+                    params.insert("SendAt", date.as_str());
+                }
                 params.insert("SendAsMms", "true");
                 params.insert("RiskCheck", "enable");
                 params.insert("From", config.phone_number.as_str());
@@ -50,22 +62,28 @@ pub fn send_mssage(
                     "https://api.twilio.com/2010-04-01/Accounts/ACefa1ef516314c9d1a68cbd657de49277/Messages.json"
                 );
 
-                let client = reqwest::Client::new();
+                // let client = reqwest::Client::new();
                 /*
                 let request = client.request(reqwest::Method::POST, url)
                     .headers(headers)
                     .form(&params);
                         */
-                let request = client.post(url).headers(headers);
+                let request = client.post(url).headers(headers).form(&params);
 
                 match request.send().await {
                     Ok(response) => {
-                        let body = response.text();
+                        match response.text().await {
+                            Ok(body) => {
+                                    let mut obj = crate::twilio::api::types::TwilioAPIMessage {
+                                        ..Default::default()
+                                };
 
-                        let mut obj = crate::twilio::api::types::TwilioAPIMessage {
-                            ..Default::default()
-                        };
-                        Ok(obj)
+                                Ok(obj)
+                            }
+                            Err(err) => {
+                                Err(std::io::Error::other(err))
+                            }
+                        }
                     }
                     Err(err) => Err(std::io::Error::other(err.to_string())),
                 }
