@@ -7,7 +7,7 @@ pub async fn send_mssage(
     contact: &textsender_models::contact::Contact,
     param: crate::twilio::types::Parameters,
     config: &textsender_models::config::auxiliary::TwilioConfig,
-) -> Result<crate::twilio::api::types::TwilioAPIMessage, std::io::Error> {
+) -> Result<reqwest::Response, std::io::Error> {
     if config.account_sid.is_empty() {
         Err(std::io::Error::other("Account SID is empty"))
     } else if config.auth_token.is_empty() {
@@ -72,6 +72,8 @@ pub async fn send_mssage(
 
                 match request.send().await {
                     Ok(response) => {
+                        Ok(response)
+                        /*
                         match response
                             .json::<crate::twilio::api::types::TwilioAPIMessage>()
                             .await
@@ -79,7 +81,6 @@ pub async fn send_mssage(
                             Ok(resp) => Ok(resp),
                             Err(err) => Err(std::io::Error::other(err)),
                         }
-                        /*
                         match response.text().await {
                             Ok(body) => {
                                 let mut obj = crate::twilio::api::types::TwilioAPIMessage {
