@@ -8,7 +8,7 @@ pub async fn send_mssage(
     param: crate::twilio::types::Parameters,
     config: &textsender_models::config::auxiliary::TwilioConfig,
 ) -> Result<crate::twilio::api::types::TwilioAPIMessage, std::io::Error> {
-    if config.account_sid.is_nil() {
+    if config.account_sid.is_empty() {
         Err(std::io::Error::other("Account SID is empty"))
     } else if config.auth_token.is_empty() {
         Err(std::io::Error::other(" Auth token is empty"))
@@ -45,9 +45,7 @@ pub async fn send_mssage(
                         let converted = date_value.to_string();
                         converted
                     }
-                    None => {
-                       String::new()
-                    }
+                    None => String::new(),
                 };
                 if param.schedule && is_scheduleable(&Some(now), &param.schedule_at) {
                     params.insert("ScheduleType", "fixed");
@@ -60,7 +58,8 @@ pub async fn send_mssage(
                 params.insert("Body", msg.content.as_str());
 
                 let url = format!(
-                    "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json", config.account_sid
+                    "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json",
+                    config.account_sid
                 );
 
                 // let client = reqwest::Client::new();
@@ -73,13 +72,12 @@ pub async fn send_mssage(
 
                 match request.send().await {
                     Ok(response) => {
-                        match response.json::<crate::twilio::api::types::TwilioAPIMessage>().await {
-                            Ok(resp) => {
-                                Ok(resp)
-                            }
-                            Err(err) => {
-                                Err(std::io::Error::other(err))
-                            }
+                        match response
+                            .json::<crate::twilio::api::types::TwilioAPIMessage>()
+                            .await
+                        {
+                            Ok(resp) => Ok(resp),
+                            Err(err) => Err(std::io::Error::other(err)),
                         }
                         /*
                         match response.text().await {
@@ -104,15 +102,13 @@ pub async fn send_mssage(
     }
 }
 
-fn generate_auth(config: &textsender_models::config::auxiliary::TwilioConfig) -> Result<String, base64_ng::EncodeError> {
+fn generate_auth(
+    config: &textsender_models::config::auxiliary::TwilioConfig,
+) -> Result<String, base64_ng::EncodeError> {
     let input = format!("{}:{}", config.account_sid, config.auth_token);
     match base64_ng::encode(input.as_bytes()) {
-        Ok(encoded) => {
-            Ok(format!("Basic {encoded}"))
-        }
-        Err(err) => {
-            Err(err)
-        }
+        Ok(encoded) => Ok(format!("Basic {encoded}")),
+        Err(err) => Err(err),
     }
 }
 /*
@@ -215,15 +211,12 @@ fn is_scheduleable(
 ) -> bool {
     match scheduled {
         Some(schedule_at) => {
-            let early = now.unwrap().checked_add(time::Duration::seconds(300)).unwrap();
-            if *schedule_at > early {
-                true
-            } else {
-                false
-            }
+            let early = now
+                .unwrap()
+                .checked_add(time::Duration::seconds(300))
+                .unwrap();
+            if *schedule_at > early { true } else { false }
         }
-        None => {
-            false
-        }
+        None => false,
     }
 }
