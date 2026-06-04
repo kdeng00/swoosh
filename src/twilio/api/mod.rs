@@ -60,7 +60,7 @@ pub async fn send_mssage(
                 params.insert("Body", msg.content.as_str());
 
                 let url = format!(
-                    "https://api.twilio.com/2010-04-01/Accounts/ACefa1ef516314c9d1a68cbd657de49277/Messages.json"
+                    "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json", config.account_sid
                 );
 
                 // let client = reqwest::Client::new();
@@ -73,6 +73,15 @@ pub async fn send_mssage(
 
                 match request.send().await {
                     Ok(response) => {
+                        match response.json::<crate::twilio::api::types::TwilioAPIMessage>().await {
+                            Ok(resp) => {
+                                Ok(resp)
+                            }
+                            Err(err) => {
+                                Err(std::io::Error::other(err))
+                            }
+                        }
+                        /*
                         match response.text().await {
                             Ok(body) => {
                                 let mut obj = crate::twilio::api::types::TwilioAPIMessage {
@@ -85,6 +94,7 @@ pub async fn send_mssage(
                                 Err(std::io::Error::other(err))
                             }
                         }
+                        */
                     }
                     Err(err) => Err(std::io::Error::other(err.to_string())),
                 }
