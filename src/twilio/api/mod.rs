@@ -22,8 +22,9 @@ pub async fn send_mssage(
                     "application/x-www-form-urlencoded".parse().unwrap(),
                 );
                 headers.insert("Accept", "application/json".parse().unwrap());
-                let auth = generate_auth(&config);
+                let auth = generate_auth(config).unwrap();
                 // headers.insert("Authorization", "Basic QUNlZmExZWY1MTYzMTRjOWQxYTY4Y2JkNjU3ZGU0OTI3NzpmNGExZjJiMGI3OWVhMzczNTA3OGMyZDhlZTk2ODRlMQ==".parse()?);
+                headers.insert("Authorization", auth.parse().unwrap());
 
                 let mut params = std::collections::HashMap::new();
                 params.insert("To", contact.phone_number.as_str());
@@ -74,8 +75,8 @@ pub async fn send_mssage(
                     Ok(response) => {
                         match response.text().await {
                             Ok(body) => {
-                                    let mut obj = crate::twilio::api::types::TwilioAPIMessage {
-                                        ..Default::default()
+                                let mut obj = crate::twilio::api::types::TwilioAPIMessage {
+                                    ..Default::default()
                                 };
 
                                 Ok(obj)
@@ -93,6 +94,17 @@ pub async fn send_mssage(
     }
 }
 
+fn generate_auth(config: &textsender_models::config::auxiliary::TwilioConfig) -> Result<String, base64_ng::EncodeError> {
+    let input = format!("{}:{}", config.account_sid, config.auth_token);
+    match base64_ng::encode(input.as_bytes()) {
+        Ok(encoded) => {
+            Ok(format!("Basic {encoded}"))
+        }
+        Err(err) => {
+            Err(err)
+        }
+    }
+}
 /*
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -191,5 +203,17 @@ fn is_scheduleable(
     now: &Option<time::OffsetDateTime>,
     scheduled: &Option<time::OffsetDateTime>,
 ) -> bool {
-    true
+    match scheduled {
+        Some(schedule_at) => {
+            let early = now.unwrap().checked_add(time::Duration::seconds(300)).unwrap();
+            if *schedule_at > early {
+                true
+            } else {
+                false
+            }
+        }
+        None => {
+            false
+        }
+    }
 }
