@@ -60,31 +60,16 @@ pub async fn send_mssage(
                 );
 
                 let request = client.post(url).headers(headers).form(&params);
-
                 match request.send().await {
                     Ok(response) => {
-                        Ok(response)
-                        /*
-                        match response
-                            .json::<crate::twilio::api::types::TwilioAPIMessage>()
-                            .await
-                        {
-                            Ok(resp) => Ok(resp),
-                            Err(err) => Err(std::io::Error::other(err)),
-                        }
-                        match response.text().await {
-                            Ok(body) => {
-                                let mut obj = crate::twilio::api::types::TwilioAPIMessage {
-                                    ..Default::default()
-                                };
-
-                                Ok(obj)
+                        match response.status() {
+                            reqwest::StatusCode::OK => {
+                                Ok(response)
                             }
-                            Err(err) => {
-                                Err(std::io::Error::other(err))
+                            status => {
+                                Err(std::io::Error::other(format!("Unaccounted status: {status:?}")))
                             }
                         }
-                        */
                     }
                     Err(err) => Err(std::io::Error::other(err.to_string())),
                 }
