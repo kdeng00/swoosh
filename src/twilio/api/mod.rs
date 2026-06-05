@@ -1,5 +1,27 @@
 pub mod types;
 
+pub async fn popp(response: reqwest::Response) -> serde_json::Value {
+    match response.json().await {
+        Ok(json_body) => {
+            json_body
+            /*
+            let res = jsonBody.as_str();
+            match serde_json::from_str(res) {
+                Ok(converted) => {
+                    converted
+                }
+                Err(_err) => {
+                    serde_json::Value::Null
+                }
+            }
+            */
+        }
+        Err(_err) => {
+            serde_json::Value::Null
+        }
+    }
+}
+
 pub async fn send_mssage(
     msg: &textsender_models::message::Message,
     contact: &textsender_models::contact::Contact,
