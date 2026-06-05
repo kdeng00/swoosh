@@ -83,7 +83,6 @@ fn generate_auth(
 }
 /*
     let mut params = std::collections::HashMap::new();
-    params.insert("To", "16303831708");
     params.insert("StatusCallback", "http://OjQozHznkhNTTR.vpnrM1zdXFuiQ");
     params.insert("MaxPrice", "1");
     params.insert("ProvideFeedback", "true");
@@ -96,21 +95,11 @@ fn generate_auth(
     params.insert("PersistentAction", "string");
     params.insert("PersistentAction", "string");
     params.insert("ShortenUrls", "true");
-    params.insert("ScheduleType", "fixed");
-    params.insert("SendAt", "2026-06-03T19:50:00.0Z");
     params.insert("SendAsMms", "true");
     params.insert("RiskCheck", "enable");
-    params.insert("From", "12243026041");
-    params.insert("MessagingServiceSid", "MG803f3676706b92eb02e18dd820c447f2");
-    params.insert("Body", "This is a test");
-
-    let request = client.request(reqwest::Method::POST, "https://api.twilio.com/2010-04-01/Accounts/ACefa1ef516314c9d1a68cbd657de49277/Messages.json")
-        .headers(headers)
-        .form(&params);
 
     let response = request.send().await?;
     let body = response.text().await?;
-
     println!("{}", body);
 
     Ok(())
