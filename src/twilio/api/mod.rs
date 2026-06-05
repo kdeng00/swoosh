@@ -61,16 +61,12 @@ pub async fn send_mssage(
 
                 let request = client.post(url).headers(headers).form(&params);
                 match request.send().await {
-                    Ok(response) => {
-                        match response.status() {
-                            reqwest::StatusCode::OK => {
-                                Ok(response)
-                            }
-                            status => {
-                                Err(std::io::Error::other(format!("Unaccounted status: {status:?}")))
-                            }
-                        }
-                    }
+                    Ok(response) => match response.status() {
+                        reqwest::StatusCode::OK => Ok(response),
+                        status => Err(std::io::Error::other(format!(
+                            "Unaccounted status: {status:?}"
+                        ))),
+                    },
                     Err(err) => Err(std::io::Error::other(err.to_string())),
                 }
             }
