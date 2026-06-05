@@ -38,10 +38,7 @@ pub async fn send_mssage(
                 // params.insert("PersistentAction", "string");
                 params.insert("ShortenUrls", "true");
                 let date = match param.schedule_at {
-                    Some(date_value) => {
-                        let converted = date_value.to_string();
-                        converted
-                    }
+                    Some(date_value) => date_value.to_string(),
                     None => String::new(),
                 };
                 if param.schedule && is_scheduleable(&Some(now), &param.schedule_at) {
@@ -130,7 +127,7 @@ fn is_scheduleable(
                 .unwrap()
                 .checked_add(time::Duration::seconds(300))
                 .unwrap();
-            if *schedule_at > early { true } else { false }
+            *schedule_at > early
         }
         None => false,
     }
