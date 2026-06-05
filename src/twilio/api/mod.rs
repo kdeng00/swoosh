@@ -1,6 +1,6 @@
 pub mod types;
 
-pub async fn popp(response: reqwest::Response) -> serde_json::Value {
+pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value {
     match response.json().await {
         Ok(json_body) => {
             json_body
