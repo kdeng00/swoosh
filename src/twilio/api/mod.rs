@@ -2,23 +2,8 @@ pub mod types;
 
 pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value {
     match response.json().await {
-        Ok(json_body) => {
-            json_body
-            /*
-            let res = jsonBody.as_str();
-            match serde_json::from_str(res) {
-                Ok(converted) => {
-                    converted
-                }
-                Err(_err) => {
-                    serde_json::Value::Null
-                }
-            }
-            */
-        }
-        Err(_err) => {
-            serde_json::Value::Null
-        }
+        Ok(json_body) => json_body,
+        Err(_err) => serde_json::Value::Null,
     }
 }
 
