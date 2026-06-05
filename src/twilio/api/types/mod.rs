@@ -36,30 +36,3 @@ pub struct TwilioAPIMessage {
 pub struct SubresourceURI {
     pub media: String,
 }
-
-/*
-{
-    "account_sid": "ACefa1ef516314c9d1a68cbd657de49277",
-    "api_version": "2010-04-01",
-    "body": "This is a test",
-    "date_created": "Wed, 03 Jun 2026 19:40:55 +0000",
-    "date_sent": null,
-    "date_updated": "Wed, 03 Jun 2026 19:40:55 +0000",
-    "direction": "outbound-api",
-    "error_code": null,
-    "error_message": null,
-    "from": "+12243026041",
-    "messaging_service_sid": "MG803f3676706b92eb02e18dd820c447f2",
-    "num_media": "0",
-    "num_segments": "0",
-    "price": null,
-    "price_unit": null,
-    "sid": "SMf5c09c776c931bdb00c6e274da2ce34d",
-    "status": "scheduled",
-    "subresource_uris": {
-        "media": "/2010-04-01/Accounts/ACefa1ef516314c9d1a68cbd657de49277/Messages/SMf5c09c776c931bdb00c6e274da2ce34d/Media.json"
-    },
-    "to": "+16303831708",
-    "uri": "/2010-04-01/Accounts/ACefa1ef516314c9d1a68cbd657de49277/Messages/SMf5c09c776c931bdb00c6e274da2ce34d.json"
-}
-*/

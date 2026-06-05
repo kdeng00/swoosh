@@ -1,5 +1,3 @@
-// use josekit::jwk::alg::ec::EcCurve::P256;
-
 pub mod types;
 
 pub async fn send_mssage(
@@ -23,7 +21,6 @@ pub async fn send_mssage(
                 );
                 headers.insert("Accept", "application/json".parse().unwrap());
                 let auth = generate_auth(config).unwrap();
-                // headers.insert("Authorization", "Basic QUNlZmExZWY1MTYzMTRjOWQxYTY4Y2JkNjU3ZGU0OTI3NzpmNGExZjJiMGI3OWVhMzczNTA3OGMyZDhlZTk2ODRlMQ==".parse()?);
                 headers.insert("Authorization", auth.parse().unwrap());
 
                 let mut params = std::collections::HashMap::new();
@@ -62,12 +59,6 @@ pub async fn send_mssage(
                     config.account_sid
                 );
 
-                // let client = reqwest::Client::new();
-                /*
-                let request = client.request(reqwest::Method::POST, url)
-                    .headers(headers)
-                    .form(&params);
-                        */
                 let request = client.post(url).headers(headers).form(&params);
 
                 match request.send().await {
@@ -113,16 +104,6 @@ fn generate_auth(
     }
 }
 /*
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::builder()
-        .build()?;
-
-    let mut headers = reqwest::header::HeaderMap::new();
-    headers.insert("Content-Type", "application/x-www-form-urlencoded".parse()?);
-    headers.insert("Accept", "application/json".parse()?);
-    headers.insert("Authorization", "Basic QUNlZmExZWY1MTYzMTRjOWQxYTY4Y2JkNjU3ZGU0OTI3NzpmNGExZjJiMGI3OWVhMzczNTA3OGMyZDhlZTk2ODRlMQ==".parse()?);
-
     let mut params = std::collections::HashMap::new();
     params.insert("To", "16303831708");
     params.insert("StatusCallback", "http://OjQozHznkhNTTR.vpnrM1zdXFuiQ");
@@ -155,54 +136,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", body);
 
     Ok(())
-}
-*/
-
-/**
- func (m *MessageSender) Send(msg message.Message, number contact.Contact, sendTime *time.Time) (*types.TwilioResult, map[string]any, error) {
-    if m.Config == nil {
-        return nil, nil, fmt.Errorf("Config has not been initialized")
-    }
-    now := time.Now()
-    client := twilio.NewRestClientWithParams(twilio.ClientParams{
-        Username: m.Config.AccountSID,
-        Password: m.Config.AuthToken,
-    })
-
-    params := &twilioApi.CreateMessageParams{}
-    params.SetTo(number.PhoneNumber)
-    params.SetFrom(m.Config.Number)
-    params.SetMessagingServiceSid(m.Config.ServiceSID)
-    params.SetBody(msg.Content)
-    if sendTime != nil && isSchedulable(&now, sendTime) {
-        params.SetSendAt(*sendTime)
-        params.SetScheduleType(Schedule_Type)
-    }
-
-    if resp, err := client.Api.CreateMessage(params); err != nil {
-        return nil, nil, fmt.Errorf("Error sending message: %v", err)
-    } else {
-        if twilioRespMarshaled, err := json.Marshal(*resp); err != nil {
-            return nil, nil, fmt.Errorf("Error parsing result: %v", err)
-        } else {
-            var rawObject map[string]any
-            if err := json.Unmarshal(twilioRespMarshaled, &rawObject); err != nil {
-                return resp, nil, err
-            } else {
-                return resp, rawObject, nil
-            }
-        }
-    }
-}
-
-func isSchedulable(now *time.Time, scheduled *time.Time) bool {
-    early := now.Add(Schedulable_Limit_In_Seconds * time.Second)
-
-    if scheduled.After(early) {
-        return true
-    } else {
-        return false
-    }
 }
 */
 
