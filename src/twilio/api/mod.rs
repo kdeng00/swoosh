@@ -32,17 +32,11 @@ pub async fn send_mssage(
 
                 let mut params = std::collections::HashMap::new();
                 params.insert("To", contact.phone_number.as_str());
-                // params.insert("StatusCallback", "http://OjQozHznkhNTTR.vpnrM1zdXFuiQ");
-                // params.insert("MaxPrice", "1");
                 params.insert("ProvideFeedback", "true");
-                // params.insert("Attempt", "5");
-                // params.insert("ValidityPeriod", "1537");
                 params.insert("ForceDelivery", "false");
                 params.insert("ContentRetention", "retain");
                 params.insert("AddressRetention", "obfuscate");
                 params.insert("SmartEncoded", "true");
-                // params.insert("PersistentAction", "string");
-                // params.insert("PersistentAction", "string");
                 params.insert("ShortenUrls", "true");
                 let date = match param.schedule_at {
                     Some(date_value) => date_value.to_string(),
@@ -66,7 +60,7 @@ pub async fn send_mssage(
                 let request = client.post(url).headers(headers).form(&params);
                 match request.send().await {
                     Ok(response) => match response.status() {
-                        reqwest::StatusCode::OK => Ok(response),
+                        reqwest::StatusCode::CREATED => Ok(response),
                         status => Err(std::io::Error::other(format!(
                             "Unaccounted status: {status:?}"
                         ))),
@@ -104,14 +98,9 @@ fn generate_auth(
     params.insert("ShortenUrls", "true");
     params.insert("SendAsMms", "true");
     params.insert("RiskCheck", "enable");
-
-    let response = request.send().await?;
-    let body = response.text().await?;
-    println!("{}", body);
-
-    Ok(())
-}
 */
+
+const DEFAULT_SCHEDULING_SECONDS: i64 = 300;
 
 fn is_scheduleable(
     now: &Option<time::OffsetDateTime>,
@@ -121,7 +110,7 @@ fn is_scheduleable(
         Some(schedule_at) => {
             let early = now
                 .unwrap()
-                .checked_add(time::Duration::seconds(300))
+                .checked_add(time::Duration::seconds(DEFAULT_SCHEDULING_SECONDS))
                 .unwrap();
             *schedule_at > early
         }

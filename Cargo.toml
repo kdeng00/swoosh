@@ -1,6 +1,6 @@
 [package]
 name = "swoosh"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 rust-version = "1.95"
 description = "Library to send text messages"
@@ -18,7 +18,7 @@ uuid = { version = "1.23.1", features = ["v4", "serde"] }
 base64-ng = { version = "1.0.6" }
 const_format = { version = "0.2.36" }
 josekit = { version = "0.10.3" }
-textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender-models.git", tag = "v0.2.5-v0.3.0-migrate-38dbcb09f7-111" }
+textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender-models.git", tag = "v0.3.0" }
 
 [dev-dependencies]
 tempfile = { version = "3.27.0" }

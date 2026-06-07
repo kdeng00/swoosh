@@ -59,15 +59,15 @@ checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
 name = "base64-ng"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8452b0c98385f31f08318109d6e06a859f89e0c5e38aad6103f095443b063052"
+checksum = "8992e20e420add1e6e31c6c548a4ba698ed9339bb0863b37478427179c56f05d"
 
 [[package]]
 name = "bitflags"
-version = "2.12.1"
+version = "2.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "84d7ced0ae9557296835c32bf1b1e02b44c746701f898460fb000d7eaa84f00a"
+checksum = "b4388bee8683e3d04af747c73422af53102d2bd24d9eadb6cbc100baef4b43f8"
 
 [[package]]
 name = "bumpalo"
@@ -862,9 +862,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.31"
+version = "0.4.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "113b30b4cd05f7c06868fdb2854f66a7b9fece9a48425351cd532e810d74024f"
+checksum = "953f07c43838f8e6f9758cab68bf5bed85465e7587ebe0b823f1bcd81978ad3a"
 
 [[package]]
 name = "lru-slab"
@@ -1573,7 +1573,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "swoosh"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "base64-ng",
  "const_format",
@@ -1658,13 +1658,12 @@ dependencies = [
 
 [[package]]
 name = "textsender_models"
-version = "0.2.5"
-source = "git+ssh://git@git.kundeng.us/phoenix/textsender-models.git?tag=v0.2.5-v0.3.0-migrate-38dbcb09f7-111#38dbcb09f7c2c572f429ec382c01e14b72b1d615"
+version = "0.3.0"
+source = "git+ssh://git@git.kundeng.us/phoenix/textsender-models.git?tag=v0.3.0#d504108745b7b97a02eac24e16763cdb5e731f2b"
 dependencies = [
  "const_format",
  "dotenvy",
  "josekit",
- "rand 0.10.1",
  "serde",
  "serde_json",
  "time",
@@ -2429,9 +2428,9 @@ checksum = "1ffae5123b2d3fc086436f8834ae3ab053a283cfac8fe0a0b8eaae044768a4c4"
 
 [[package]]
 name = "yoke"
-version = "0.8.2"
+version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "abe8c5fda708d9ca3df187cae8bfb9ceda00dd96231bed36e445a1a48e66f9ca"
+checksum = "709fe23a0424b6a435d82152b1bd3fdfb0833487d5fa90d05d42762a9891fef5"
 dependencies = [
  "stable_deref_trait",
  "yoke-derive",
