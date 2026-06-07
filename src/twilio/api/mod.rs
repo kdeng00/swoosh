@@ -104,13 +104,6 @@ fn generate_auth(
     params.insert("ShortenUrls", "true");
     params.insert("SendAsMms", "true");
     params.insert("RiskCheck", "enable");
-
-    let response = request.send().await?;
-    let body = response.text().await?;
-    println!("{}", body);
-
-    Ok(())
-}
 */
 
 fn is_scheduleable(
