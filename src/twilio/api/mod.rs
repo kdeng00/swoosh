@@ -106,6 +106,8 @@ fn generate_auth(
     params.insert("RiskCheck", "enable");
 */
 
+const DEFAULT_SCHEDULING_SECONDS: i64 = 300;
+
 fn is_scheduleable(
     now: &Option<time::OffsetDateTime>,
     scheduled: &Option<time::OffsetDateTime>,
@@ -114,7 +116,7 @@ fn is_scheduleable(
         Some(schedule_at) => {
             let early = now
                 .unwrap()
-                .checked_add(time::Duration::seconds(300))
+                .checked_add(time::Duration::seconds(DEFAULT_SCHEDULING_SECONDS))
                 .unwrap();
             *schedule_at > early
         }
