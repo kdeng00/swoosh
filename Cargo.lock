@@ -1658,13 +1658,12 @@ dependencies = [
 
 [[package]]
 name = "textsender_models"
-version = "0.2.5"
-source = "git+ssh://git@git.kundeng.us/phoenix/textsender-models.git?tag=v0.2.5-v0.3.0-migrate-38dbcb09f7-111#38dbcb09f7c2c572f429ec382c01e14b72b1d615"
+version = "0.3.0"
+source = "git+ssh://git@git.kundeng.us/phoenix/textsender-models.git?tag=v0.3.0#d504108745b7b97a02eac24e16763cdb5e731f2b"
 dependencies = [
  "const_format",
  "dotenvy",
  "josekit",
- "rand 0.10.1",
  "serde",
  "serde_json",
  "time",
