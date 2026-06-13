@@ -18,7 +18,7 @@ uuid = { version = "1.23.1", features = ["v4", "serde"] }
 base64-ng = { version = "1.0.6" }
 const_format = { version = "0.2.36" }
 josekit = { version = "0.10.3" }
-textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender_models.git", tag = "v0.3.0" }
+textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender_models.git", tag = "v0.3.1" }
 
 [dev-dependencies]
 tempfile = { version = "3.27.0" }
