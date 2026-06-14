@@ -13,12 +13,12 @@ futures = { version = "0.3.32" }
 http = { version = "1.4.0" }
 reqwest = { version = "0.13.3", features = ["form", "json", "blocking", "multipart", "stream"] }
 rand = { version = "0.10.1" }
-time = { version = "0.3.47", features = ["formatting", "macros", "parsing", "serde"] }
+time = { version = "0.3.49", features = ["formatting", "macros", "parsing", "serde"] }
 uuid = { version = "1.23.1", features = ["v4", "serde"] }
 base64-ng = { version = "1.0.8" }
 const_format = { version = "0.2.36" }
 josekit = { version = "0.10.3" }
-textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender_models.git", tag = "v0.3.4-28-e7834093a6-111", features = ["config", "contact", "message"] }
+textsender_models = { git = "ssh://git@git.kundeng.us/phoenix/textsender_models.git", tag = "v0.4.0", features = ["config", "contact", "message"] }
 
 [dev-dependencies]
 tempfile = { version = "3.27.0" }
