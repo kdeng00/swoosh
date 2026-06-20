@@ -14,7 +14,7 @@ pub use send_message as send_mssage;
 pub async fn send_message(
     msg: &textsender_models::message::Message,
     contact: &textsender_models::contact::Contact,
-    param: crate::twilio::types::Parameters,
+    param: &crate::twilio::types::Parameters,
     config: &textsender_models::config::auxiliary::TwilioConfig,
 ) -> Result<reqwest::Response, std::io::Error> {
     if config.account_sid.is_empty() {
