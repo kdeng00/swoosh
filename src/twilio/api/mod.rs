@@ -7,7 +7,11 @@ pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value 
     }
 }
 
-pub async fn send_mssage(
+/// Backwards compatible
+pub use send_message as send_mssage;
+
+/// Send a message
+pub async fn send_message(
     msg: &textsender_models::message::Message,
     contact: &textsender_models::contact::Contact,
     param: crate::twilio::types::Parameters,
