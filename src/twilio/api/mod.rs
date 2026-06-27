@@ -37,6 +37,8 @@ pub async fn send_message(
 
                 let params = init_params(contact, msg, config, param);
 
+                println!("Params: {params:?}");
+
                 let url = format!(
                     "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json",
                     config.account_sid
@@ -83,7 +85,7 @@ fn init_params(
     };
     if param.schedule && is_scheduleable(Some(&now), Some(&scheduled_at)) {
         params.insert(String::from("ScheduleType"), String::from("fixed"));
-        params.insert(String::from("SendAt"), date);
+        params.insert(String::from("SendAt"), date.clone());
     }
     params.insert(String::from("SendAsMms"), String::from("true"));
     params.insert(String::from("RiskCheck"), String::from("enable"));
