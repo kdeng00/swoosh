@@ -76,7 +76,13 @@ fn init_params(
     params.insert(String::from("SmartEncoded"), String::from("true"));
     params.insert(String::from("ShortenUrls"), String::from("true"));
     let date = match param.schedule_at {
-        Some(date_value) => date_value.to_string(),
+        Some(date_value) => match convert_time_to_iso(date_value) {
+            Ok(converted) => converted,
+            Err(err) => {
+                eprintln!("Error: {err:?}");
+                String::new()
+            }
+        },
         None => String::new(),
     };
     let scheduled_at = match param.schedule_at {
@@ -115,6 +121,14 @@ fn init_params(
     */
 
     params
+}
+
+fn convert_time_to_iso(time: time::OffsetDateTime) -> Result<String, time::error::Format> {
+    use time::format_description::well_known::Iso8601;
+    match time.format(&Iso8601::DEFAULT) {
+        Ok(converted) => Ok(converted),
+        Err(err) => Err(err),
+    }
 }
 
 fn generate_auth(
