@@ -2368,8 +2368,8 @@ dependencies = [
 
 [[package]]
 name = "textsender_models"
-version = "0.4.3"
-source = "git+ssh://git@git.kundeng.us/phoenix/textsender_models.git?tag=v0.4.3-29-720f3d8f75-111#720f3d8f7515d8cd20a9cd73086bd6c1ab857651"
+version = "0.4.10"
+source = "git+ssh://git@git.kundeng.us/phoenix/textsender_models.git?tag=v0.4.10-29-6e91320709-111#6e91320709a369b525e911c51682a0d959a746dc"
 dependencies = [
  "const_format",
  "dotenvy",
