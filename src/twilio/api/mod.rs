@@ -37,8 +37,6 @@ pub async fn send_message(
 
                 let params = init_params(contact, msg, config, param);
 
-                println!("Params: {params:?}");
-
                 let url = format!(
                     "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json",
                     config.account_sid
