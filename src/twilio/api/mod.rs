@@ -123,10 +123,7 @@ fn init_params(
 
 fn convert_time_to_iso(time: time::OffsetDateTime) -> Result<String, time::error::Format> {
     use time::format_description::well_known::Iso8601;
-    match time.format(&Iso8601::DEFAULT) {
-        Ok(converted) => Ok(converted),
-        Err(err) => Err(err),
-    }
+    time.format(&Iso8601::DEFAULT)
 }
 
 fn generate_auth(
