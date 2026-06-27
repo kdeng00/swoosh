@@ -1,5 +1,7 @@
 pub mod types;
 
+/// Converts the response into a json value
+/// That way you do not need to share swoosh's dependency
 pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value {
     match response.json().await {
         Ok(json_body) => json_body,
@@ -7,10 +9,14 @@ pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value 
     }
 }
 
-pub async fn send_mssage(
+/// Backwards compatible
+pub use send_message as send_mssage;
+
+/// Send a message
+pub async fn send_message(
     msg: &textsender_models::message::Message,
     contact: &textsender_models::contact::Contact,
-    param: crate::twilio::types::Parameters,
+    param: &crate::twilio::types::Parameters,
     config: &textsender_models::config::auxiliary::TwilioConfig,
 ) -> Result<reqwest::Response, std::io::Error> {
     if config.account_sid.is_empty() {
@@ -18,7 +24,6 @@ pub async fn send_mssage(
     } else if config.auth_token.is_empty() {
         Err(std::io::Error::other(" Auth token is empty"))
     } else {
-        let now = time::OffsetDateTime::now_utc();
         match reqwest::Client::builder().build() {
             Ok(client) => {
                 let mut headers = reqwest::header::HeaderMap::new();
@@ -30,27 +35,7 @@ pub async fn send_mssage(
                 let auth = generate_auth(config).unwrap();
                 headers.insert("Authorization", auth.parse().unwrap());
 
-                let mut params = std::collections::HashMap::new();
-                params.insert("To", contact.phone_number.as_str());
-                params.insert("ProvideFeedback", "true");
-                params.insert("ForceDelivery", "false");
-                params.insert("ContentRetention", "retain");
-                params.insert("AddressRetention", "obfuscate");
-                params.insert("SmartEncoded", "true");
-                params.insert("ShortenUrls", "true");
-                let date = match param.schedule_at {
-                    Some(date_value) => date_value.to_string(),
-                    None => String::new(),
-                };
-                if param.schedule && is_scheduleable(&Some(now), &param.schedule_at) {
-                    params.insert("ScheduleType", "fixed");
-                    params.insert("SendAt", date.as_str());
-                }
-                params.insert("SendAsMms", "true");
-                params.insert("RiskCheck", "enable");
-                params.insert("From", config.phone_number.as_str());
-                params.insert("MessagingServiceSid", config.service_sid.as_str());
-                params.insert("Body", msg.content.as_str());
+                let params = init_params(contact, msg, config, param);
 
                 let url = format!(
                     "https://api.twilio.com/2010-04-01/Accounts/{}/Messages.json",
@@ -73,6 +58,74 @@ pub async fn send_mssage(
     }
 }
 
+fn init_params(
+    contact: &textsender_models::contact::Contact,
+    message: &textsender_models::message::Message,
+    config: &textsender_models::config::auxiliary::TwilioConfig,
+    param: &crate::twilio::types::Parameters,
+) -> std::collections::HashMap<String, String> {
+    let now = time::OffsetDateTime::now_utc();
+    let mut params = std::collections::HashMap::new();
+    params.insert(String::from("To"), contact.phone_number.clone());
+    params.insert(String::from("ProvideFeedback"), String::from("true"));
+    params.insert(String::from("ForceDelivery"), String::from("false"));
+    params.insert(String::from("ContentRetention"), String::from("retain"));
+    params.insert(String::from("AddressRetention"), String::from("obfuscate"));
+    params.insert(String::from("SmartEncoded"), String::from("true"));
+    params.insert(String::from("ShortenUrls"), String::from("true"));
+    let date = match param.schedule_at {
+        Some(date_value) => match convert_time_to_iso(date_value) {
+            Ok(converted) => converted,
+            Err(err) => {
+                eprintln!("Error: {err:?}");
+                String::new()
+            }
+        },
+        None => String::new(),
+    };
+    let scheduled_at = match param.schedule_at {
+        Some(s) => s,
+        None => time::OffsetDateTime::now_utc(),
+    };
+    if param.schedule && is_scheduleable(Some(&now), Some(&scheduled_at)) {
+        params.insert(String::from("ScheduleType"), String::from("fixed"));
+        params.insert(String::from("SendAt"), date.clone());
+    }
+    params.insert(String::from("SendAsMms"), String::from("true"));
+    params.insert(String::from("RiskCheck"), String::from("enable"));
+    params.insert(String::from("From"), config.phone_number.clone());
+    params.insert(
+        String::from("MessagingServiceSid"),
+        config.service_sid.clone(),
+    );
+    params.insert(String::from("Body"), message.content.clone());
+
+    /*
+        let mut params = std::collections::HashMap::new();
+        params.insert("StatusCallback", "http://OjQozHznkhNTTR.vpnrM1zdXFuiQ");
+        params.insert("MaxPrice", "1");
+        params.insert("ProvideFeedback", "true");
+        params.insert("Attempt", "5");
+        params.insert("ValidityPeriod", "1537");
+        params.insert("ForceDelivery", "false");
+        params.insert("ContentRetention", "retain");
+        params.insert("AddressRetention", "obfuscate");
+        params.insert("SmartEncoded", "true");
+        params.insert("PersistentAction", "string");
+        params.insert("PersistentAction", "string");
+        params.insert("ShortenUrls", "true");
+        params.insert("SendAsMms", "true");
+        params.insert("RiskCheck", "enable");
+    */
+
+    params
+}
+
+fn convert_time_to_iso(time: time::OffsetDateTime) -> Result<String, time::error::Format> {
+    use time::format_description::well_known::Iso8601;
+    time.format(&Iso8601::DEFAULT)
+}
+
 fn generate_auth(
     config: &textsender_models::config::auxiliary::TwilioConfig,
 ) -> Result<String, base64_ng::EncodeError> {
@@ -82,29 +135,12 @@ fn generate_auth(
         Err(err) => Err(err),
     }
 }
-/*
-    let mut params = std::collections::HashMap::new();
-    params.insert("StatusCallback", "http://OjQozHznkhNTTR.vpnrM1zdXFuiQ");
-    params.insert("MaxPrice", "1");
-    params.insert("ProvideFeedback", "true");
-    params.insert("Attempt", "5");
-    params.insert("ValidityPeriod", "1537");
-    params.insert("ForceDelivery", "false");
-    params.insert("ContentRetention", "retain");
-    params.insert("AddressRetention", "obfuscate");
-    params.insert("SmartEncoded", "true");
-    params.insert("PersistentAction", "string");
-    params.insert("PersistentAction", "string");
-    params.insert("ShortenUrls", "true");
-    params.insert("SendAsMms", "true");
-    params.insert("RiskCheck", "enable");
-*/
 
 const DEFAULT_SCHEDULING_SECONDS: i64 = 300;
 
 fn is_scheduleable(
-    now: &Option<time::OffsetDateTime>,
-    scheduled: &Option<time::OffsetDateTime>,
+    now: Option<&time::OffsetDateTime>,
+    scheduled: Option<&time::OffsetDateTime>,
 ) -> bool {
     match scheduled {
         Some(schedule_at) => {
