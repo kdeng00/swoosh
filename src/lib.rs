@@ -40,15 +40,15 @@ impl SendMsg {
         param: &crate::twilio::types::Parameters,
     ) -> Result<reqwest::Response, std::io::Error> {
         if self.recipient.phone_number.is_empty() {
-            return Err(std::io::Error::other("Recipient not provided"));
+            Err(std::io::Error::other("Recipient not provided"))
         } else if self.message.content.is_empty() {
-            return Err(std::io::Error::other("Message not provided"));
+            Err(std::io::Error::other("Message not provided"))
         } else if self.config.phone_number.is_empty()
             || self.config.service_sid.is_empty()
             || self.config.auth_token.is_empty()
             || self.config.auth_sid.is_empty()
         {
-            return Err(std::io::Error::other("Config not populated"));
+            Err(std::io::Error::other("Config not populated"))
         } else {
             let client = match reqwest::Client::builder().build() {
                 Ok(client) => client,
