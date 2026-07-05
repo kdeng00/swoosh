@@ -87,7 +87,7 @@ pub fn init_headers(
     };
     headers.insert(
         "Authorization",
-        match auth.parse() {
+        match format!("Basic {auth}").parse() {
             Ok(auth) => auth,
             Err(err) => {
                 return Err(std::io::Error::other(err));
