@@ -13,13 +13,13 @@ impl SendMsg {
         auth_token: &str,
         phone_number: &str,
         service_sid: &str,
-        auth_sid: &str,
+        account_sid: &str,
     ) {
         self.config = VendorConfig {
             auth_token: auth_token.to_string(),
             phone_number: phone_number.to_string(),
             service_sid: service_sid.to_string(),
-            auth_sid: auth_sid.to_string(),
+            account_sid: account_sid.to_string(),
         }
     }
 
@@ -46,7 +46,7 @@ impl SendMsg {
         } else if self.config.phone_number.is_empty()
             || self.config.service_sid.is_empty()
             || self.config.auth_token.is_empty()
-            || self.config.auth_sid.is_empty()
+            || self.config.account_sid.is_empty()
         {
             Err(std::io::Error::other("Config not populated"))
         } else {
@@ -57,9 +57,9 @@ impl SendMsg {
                 }
             };
 
-            let url = twilio::api::twilio_url(&self.config.auth_sid);
+            let url = twilio::api::twilio_url(&self.config.account_sid);
             let headers =
-                match twilio::api::init_headers(&self.config.auth_sid, &self.config.auth_token) {
+                match twilio::api::init_headers(&self.config.account_sid, &self.config.auth_token) {
                     Ok(headers) => headers,
                     Err(err) => {
                         return Err(std::io::Error::other(err));
@@ -91,7 +91,7 @@ pub struct VendorConfig {
     pub auth_token: String,
     pub phone_number: String,
     pub service_sid: String,
-    pub auth_sid: String,
+    pub account_sid: String,
 }
 
 #[derive(Default, Debug)]
