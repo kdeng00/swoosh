@@ -1,6 +1,6 @@
 [package]
 name = "swoosh"
-version = "0.5.3"
+version = "0.5.4"
 edition = "2024"
 rust-version = "1.97"
 description = "Library to send text messages"
