@@ -14,10 +14,10 @@ pub use send_message as send_mssage;
 
 /// Send a message
 pub async fn send_message(
-    msg: &textsender_models::message::Message,
-    contact: &textsender_models::contact::Contact,
+    msg: &schedtxt_models::message::Message,
+    contact: &schedtxt_models::contact::Contact,
     param: &crate::twilio::types::Parameters,
-    config: &textsender_models::config::auxiliary::TwilioConfig,
+    config: &schedtxt_models::config::auxiliary::TwilioConfig,
 ) -> Result<reqwest::Response, std::io::Error> {
     if config.account_sid.is_empty() {
         Err(std::io::Error::other("Account SID is empty"))
@@ -145,9 +145,9 @@ pub fn initial_params(
 }
 
 fn init_params(
-    contact: &textsender_models::contact::Contact,
-    message: &textsender_models::message::Message,
-    config: &textsender_models::config::auxiliary::TwilioConfig,
+    contact: &schedtxt_models::contact::Contact,
+    message: &schedtxt_models::message::Message,
+    config: &schedtxt_models::config::auxiliary::TwilioConfig,
     param: &crate::twilio::types::Parameters,
 ) -> std::collections::HashMap<String, String> {
     let now = time::OffsetDateTime::now_utc();
@@ -213,7 +213,7 @@ fn convert_time_to_iso(time: time::OffsetDateTime) -> Result<String, time::error
 }
 
 fn generate_auth(
-    config: &textsender_models::config::auxiliary::TwilioConfig,
+    config: &schedtxt_models::config::auxiliary::TwilioConfig,
 ) -> Result<String, base64_ng::EncodeError> {
     let input = format!("{}:{}", config.account_sid, config.auth_token);
     match base64_ng::encode(input.as_bytes()) {
