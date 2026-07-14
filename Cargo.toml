@@ -3,6 +3,7 @@ name = "swoosh"
 version = "0.5.4"
 edition = "2024"
 rust-version = "1.97"
+license = "MIT"
 description = "Library to send text messages"
 
 [dependencies]
