@@ -8,7 +8,7 @@ description = "Library to send text messages"
 
 [dependencies]
 serde = { version = "1.0.229", features = ["derive"] }
-serde_json = { version = "1.0.150" }
+serde_json = { version = "1.0.154" }
 reqwest = { version = "0.13.4", features = ["form", "json", "blocking", "multipart", "stream"] }
 time = { version = "0.3.53", features = ["formatting", "macros", "parsing", "serde"] }
 base64-ng = { version = "1.3.7" }
