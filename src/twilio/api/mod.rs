@@ -4,7 +4,6 @@ use crate::schedulable;
 use crate::url::twilio_url;
 use crate::util;
 
-
 /// Converts the response into a json value
 /// That way you do not need to share swoosh's dependency
 pub async fn response_to_json(response: reqwest::Response) -> serde_json::Value {
@@ -60,7 +59,6 @@ pub async fn send_message(
     }
 }
 
-
 fn generate_auth(
     config: &schedtxt_models::config::auxiliary::TwilioConfig,
 ) -> Result<String, base64_ng::EncodeError> {
@@ -70,7 +68,6 @@ fn generate_auth(
         Err(err) => Err(err),
     }
 }
-
 
 fn init_params(
     contact: &schedtxt_models::contact::Contact,

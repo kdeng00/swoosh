@@ -59,15 +59,13 @@ impl SendMsg {
             };
 
             let url = twilio_url(&self.config.account_sid);
-            let headers = match networking::init_headers(
-                &self.config.account_sid,
-                &self.config.auth_token,
-            ) {
-                Ok(headers) => headers,
-                Err(err) => {
-                    return Err(std::io::Error::other(err));
-                }
-            };
+            let headers =
+                match networking::init_headers(&self.config.account_sid, &self.config.auth_token) {
+                    Ok(headers) => headers,
+                    Err(err) => {
+                        return Err(std::io::Error::other(err));
+                    }
+                };
             let params = networking::initial_params(
                 &self.recipient.phone_number,
                 &self.message.content,
