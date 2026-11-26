@@ -18,6 +18,7 @@ schedtxt_models = { git = "ssh://git@git.kundeng.us/phoenix/schedtxt_models.git"
 
 [features]
 default = ["full"]
+slim = ["send_message", "networking"]
 full = ["networking", "schedtxt_models", "send_message", "twilio", "url", "util"]
 networking = ["schedulable", "url", "util"]
 schedtxt_models = ["dep:schedtxt_models"]
